@@ -51,6 +51,7 @@ class FormsGenerator extends Command
             $form->setRawAttributes([
                 'name' => uniqid(),
                 'data' => $this->getFormData(),
+                'step_id' => 1,
             ]);
             if ($form->save()) {
                 dump("Form {$form->name} saved");
