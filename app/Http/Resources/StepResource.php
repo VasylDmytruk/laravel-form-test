@@ -14,14 +14,8 @@ class StepResource extends JsonResource
      */
     public function toArray($request)
     {
-//        $parent = parent::toArray($request);
-//        unset($parent['form_id']);
-//
-//        $merged = array_merge($parent, [
-//            'forms' => FormResource::collection($this->whenLoaded('forms')),
-//        ]);
-
         return [
+            'id' => $this->id,
             'title' => $this->title,
             'form' => $this->form,
         ];

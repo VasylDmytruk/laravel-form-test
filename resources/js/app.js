@@ -19,12 +19,16 @@ import FormsCreate from './components/forms/FormsCreate';
 import FormsEdit from './components/forms/FormsEdit';
 import FormsView from './components/forms/FormsView';
 import PassportView from './components/Passport';
+import StepIndex from './components/steps/Index';
+import VueGoodTablePlugin from 'vue-good-table';
+import 'vue-good-table/dist/vue-good-table.css';
 
 window.Vue = require('vue');
 
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
 Vue.use(Notifications);
+Vue.use(VueGoodTablePlugin);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -44,6 +48,7 @@ const routes = [
     {path: '/forms/edit/:id', component: FormsEdit},
     {path: '/forms/view/:id', component: FormsView},
     {path: '/passport-view', component: PassportView},
+    {path: '/steps', component: StepIndex},
 ];
 
 const router = new VueRouter({routes});

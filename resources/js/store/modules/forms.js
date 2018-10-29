@@ -78,6 +78,10 @@ export default {
             }
         },
         deleteForm({commit}, {id, index}) {
+            if (!confirm('Do you really want to delete this item')) {
+                return;
+            }
+
             return new Promise((resolve, reject) => {
                 forms.deleteForm(
                     response => {

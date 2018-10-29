@@ -1,53 +1,34 @@
 <template>
     <div>
-        <div>Forms number: {{allForms.length}}</div>
-        <div class="loading" v-if="allForms.length === 0">Loading...</div>
-        <div class="table-wrap" v-else>
-            <table class="table table-bordered grid-table-fixed">
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Data</th>
-                    <th></th>
-                </tr>
-                <tr v-for="(form, index) in allForms" :key="form.id">
-                    <td>{{form.id}}</td>
-                    <td>{{form.name}}</td>
-                    <td class="word-limit">
-                        <div class="limit-div" v-if="canShowData(index)">{{form.data}}</div>
-                        <div v-else><a href="#" @click.prevent="setShowDataItem(index)">Show</a></div>
-                    </td>
-                    <td>
-                        <router-link :to="'/forms/edit/' + form.id">Edit</router-link>
-                        <br>
-                        <router-link :to="'/forms/view/' + form.id">View</router-link>
-                        <br>
-                        <a href="#" v-on:click.prevent="deleteItem(index, form.id)">Delete</a>
-                    </td>
-                </tr>
-            </table>
-        </div>
+        <grid-view :columns="columns" :rows="allForms" :action="action" :delete-item-func="deleteForm"></grid-view>
     </div>
 </template>
 <script>
-    import Vue from 'vue';
     import {mapState, mapActions} from 'vuex';
+    import GridView from '../widgets/grid/GridView';
 
     export default {
         name: "FormsIndex",
+        components: {GridView},
         data() {
             return {
                 loading: true,
                 errored: false,
                 dataFormsServer: [],
                 showData: {},
+                columns: [
+                    {label: 'ID', field: 'id',},
+                    {label: 'Name', field: 'name',},
+                    {label: 'Data', field: 'data', type: 'expandable',},
+                    {type: 'action'},
+                ],
+                action: 'forms',
             }
         },
         computed: mapState({
             allForms: state => state.forms.allForms,
         }),
         created() {
-            console.log('created*************************');
             this.getForms();
         },
         methods: {
@@ -55,23 +36,6 @@
                 getForms: 'forms/getForms',
                 deleteForm: 'forms/deleteForm',
             }),
-            canShowData(index) {
-                return this.showData[index] !== undefined;
-            },
-            setShowDataItem(index) {
-                Vue.set(this.showData, index, true);
-            },
-            deleteItem(index, id) {
-                if (confirm('Do you really want to delete this item')) {
-                    this.deleteForm({id, index})
-                        .then(response => {
-                            this.$notify({type: 'success', title: 'Deleted', text: 'Item deleted successfully!'});
-                        })
-                        .catch(error => {
-                            this.$notify({type: 'error', title: 'Not deleted', text: 'Can not delete item!'});
-                        });
-                }
-            },
         },
     }
 </script>

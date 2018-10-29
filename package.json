@@ -22,6 +22,7 @@
     "dependencies": {
         "autoxloo-form-builder": "^1.2.18",
         "bootstrap-vue": "^2.0.0-rc.11",
+        "vue-good-table": "^2.15.3",
         "vue-notification": "^1.3.13",
         "vue-router": "^3.0.1",
         "vuejs-datepicker": "^1.5.3",
