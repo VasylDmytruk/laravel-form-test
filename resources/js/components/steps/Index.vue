@@ -1,6 +1,6 @@
 <template>
     <div>
-        <grid-view :columns="columns" :rows="allSteps" :delete-item-func="deleteStep" :action="action"></grid-view>
+        <grid-view :columns="columns" :rows="allItems" :delete-item-func="deleteItem" :action="action"></grid-view>
     </div>
 </template>
 
@@ -12,7 +12,7 @@
         name: 'Index',
         components: {GridView},
         computed: mapState({
-            allSteps: state => state.steps.allSteps,
+            allItems: state => state.steps.allItems,
         }),
         data() {
             return {
@@ -26,12 +26,12 @@
             };
         },
         created() {
-            this.getSteps();
+            this.getItems();
         },
         methods: {
             ...mapActions({
-                getSteps: 'steps/getSteps',
-                deleteStep: 'steps/deleteStep',
+                getItems: 'steps/getItems',
+                deleteItem: 'steps/deleteItem',
             }),
         },
     };
