@@ -9,10 +9,6 @@ export default {
         method = method || 'get';
         data = data || null;
 
-        console.log('url', url);
-        console.log('method', method);
-        console.log('data', data);
-
         axios({
             method: method,
             url: url,

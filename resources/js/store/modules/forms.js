@@ -7,5 +7,17 @@ const forms = cloneDeep(crud);
 
 forms.route = 'forms';
 formsCrudModule.state.crudApi = forms;
+formsCrudModule.mutations.seItem = function (state, item) {
+    state.lastItem = item;
+
+    if (item.data) {
+        try {
+            state.lastItem.data = JSON.parse(item.data);
+        } catch (e) {
+        }
+    }
+
+    state.setCachedItem(state.lastItem);
+};
 
 export default formsCrudModule;

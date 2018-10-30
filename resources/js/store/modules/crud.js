@@ -34,15 +34,6 @@ export default {
         },
         seItem(state, item) {
             state.lastItem = item;
-
-            // TODO change this to work only for form item
-            if (item.data) {
-                try {
-                    state.lastItem.data = JSON.parse(item.data);
-                } catch (e) {
-                }
-            }
-
             state.setCachedItem(state.lastItem);
         },
         resetItem(state) {
