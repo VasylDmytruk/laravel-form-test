@@ -1,7 +1,6 @@
 import Vue from 'vue';
 
 export default {
-    crudApi: {},
     namespaced: true,
     state: {
         crudApi: {},
@@ -33,12 +32,13 @@ export default {
         setError(state, error) {
             state.lastError = error;
         },
-        seItem(state, step) {
-            state.lastItem = step;
+        seItem(state, item) {
+            state.lastItem = item;
 
-            if (step.data) {
+            // TODO change this to work only for form item
+            if (item.data) {
                 try {
-                    state.lastItem.data = JSON.parse(step.data);
+                    state.lastItem.data = JSON.parse(item.data);
                 } catch (e) {
                 }
             }
@@ -61,8 +61,12 @@ export default {
     actions: {
         getItems({commit, state}) {
             state.crudApi.getItems(
-                items => {commit('setItems', items)},
-                error => {commit('setError', error)},
+                items => {
+                    commit('setItems', items);
+                },
+                error => {
+                    commit('setError', error);
+                },
             );
         },
         getItem({commit, state}, id) {
@@ -72,8 +76,12 @@ export default {
                 commit('setItemFromCache', id);
             } else {
                 state.crudApi.getItem(
-                    step => {commit('seItem', step)},
-                    error => {commit('setError', error)},
+                    item => {
+                        commit('seItem', item);
+                    },
+                    error => {
+                        commit('setError', error);
+                    },
                     id,
                 );
             }
@@ -97,7 +105,7 @@ export default {
                 );
             });
         },
-        createItem({commit, state}, step) {
+        createItem({commit, state}, data) {
             return new Promise((resolve, reject) => {
                 state.crudApi.createItem(
                     response => {
@@ -106,11 +114,11 @@ export default {
                     error => {
                         reject(error);
                     },
-                    step
+                    data
                 );
             });
         },
-        updateItem({commit, state}, {id, step}) {
+        updateItem({commit, state}, {id, data}) {
             return new Promise((resolve, reject) => {
                 state.crudApi.updateItem(
                     response => {
@@ -119,7 +127,7 @@ export default {
                     error => {
                         reject(error);
                     },
-                    {id, step}
+                    {id, data}
                 );
             });
         },

@@ -20,11 +20,11 @@
             menuItem: editMenuItemProp,
         },
         computed: mapState({
-            form: state => state.forms.lastForm,
+            form: state => state.forms.lastItem,
         }),
         methods: {
             ...mapActions({
-                getForm: 'forms/getForm',
+                getForm: 'forms/getItem',
             }),
             ...mapMutations({
                 addMenuItem: 'menu/addItem',
@@ -32,13 +32,11 @@
             }),
         },
         created() {
-            console.log('created', this.form);
             this.addMenuItem(this.menuItem);
             this.getForm(this.$route.params.id);
         },
         beforeDestroy() {
             this.removeMenuItem(this.menuItem);
-
         },
     }
 </script>

@@ -114,12 +114,12 @@ class FormController extends Controller
      */
     public function update(Request $request, Form $form)
     {
-        $validatedAttributes = $this->validateModel($request->all());
-        if (!\is_array($validatedAttributes)) {
-            return $validatedAttributes;
+        $validatedAttributesOrErrors = $this->validateModel($request->all());
+        if (!\is_array($validatedAttributesOrErrors)) {
+            return $validatedAttributesOrErrors;
         }
 
-        $form->setRawAttributes($validatedAttributes);
+        $form->setRawAttributes($validatedAttributesOrErrors);
         if (!empty($form->data)) {
             $form->data = json_encode($form->data);
         }

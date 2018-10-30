@@ -1,9 +1,9 @@
-import _ from 'lodash';
+import cloneDeep  from 'clone-deep';
 import crud from '../../api/crud';
 import crudModule from './crud';
 
-const formsCrudModule = _.cloneDeep(crudModule);
-const forms = _.cloneDeep(crud);
+const formsCrudModule = cloneDeep(crudModule);
+const forms = cloneDeep(crud);
 
 forms.route = 'forms';
 formsCrudModule.state.crudApi = forms;

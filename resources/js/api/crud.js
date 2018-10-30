@@ -38,11 +38,11 @@ export default {
         this._apiRequest(callback, errorCallback, this._baseUrl + '/api/' + this.route + '/' + id, 'delete');
     },
 
-    createItem(callback, errorCallback, item) {
-        this._apiRequest(callback, errorCallback, this._baseUrl + '/api/' + this.route, 'post', item);
+    createItem(callback, errorCallback, data) {
+        this._apiRequest(callback, errorCallback, this._baseUrl + '/api/' + this.route, 'post', data);
     },
 
-    updateItem(callback, errorCallback, {id, item}) {
-        this._apiRequest(callback, errorCallback, this._baseUrl + '/api/' + this.route + '/' + id, 'put', item);
+    updateItem(callback, errorCallback, {id, data}) {
+        this._apiRequest(callback, errorCallback, this._baseUrl + '/api/' + this.route + '/' + id, 'put', data);
     },
 }

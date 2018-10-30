@@ -21,7 +21,7 @@
             menuItem: viewMenuItemProp,
         },
         computed: mapState({
-            form: state => state.forms.lastForm,
+            form: state => state.forms.lastItem,
         }),
         created() {
             this.addMenuItem(this.menuItem);
@@ -32,8 +32,8 @@
         },
         methods: {
             ...mapActions({
-                getForm: 'forms/getForm',
-                updateForm: 'forms/updateForm',
+                getForm: 'forms/getItem',
+                updateForm: 'forms/updateItem',
             }),
             ...mapMutations({
                 addMenuItem: 'menu/addItem',
@@ -42,9 +42,10 @@
             save() {
                 this.updateForm({
                     id: this.$route.params.id,
-                    form: this.form,
+                    data: this.form,
                 })
                     .then(response => {
+                        console.log('response', response);
                         const notificationType = response.success ? 'success' : 'error';
                         const notificationText = response.success ? 'Your form saved successfully!' : 'Form validation failed!';
                         this.$notify({type: notificationType, title: 'Save result', text: notificationText});
