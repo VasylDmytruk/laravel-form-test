@@ -1,8 +1,7 @@
 <template>
     <div>
         <div>Items: {{rows.length}}</div>
-        <div class="loading" v-if="rows.length === 0">Loading...</div>
-        <div class="table-wrap" v-else>
+        <div class="table-wrap">
             <table class="table table-bordered grid-table-fixed">
                 <tr>
                     <template v-for="column in columns">

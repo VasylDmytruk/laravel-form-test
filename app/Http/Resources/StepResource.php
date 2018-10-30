@@ -19,7 +19,7 @@ class StepResource extends JsonResource
             'title' => $this->title,
             'step_order' => $this->step_order,
             'healing_methods' => $this->healing_methods,
-            'form' => $this->form,
+            'form' => $this->form ? $this->form : ['title' => '', 'data' => null],
         ];
     }
 }

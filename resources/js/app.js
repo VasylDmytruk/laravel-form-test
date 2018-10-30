@@ -46,12 +46,12 @@ Vue.component('passport-personal-access-tokens', require('./components/passport/
 Vue.component('form-builder', FormBuilder);
 
 const routes = [
-    {path: '/', component: FormsIndex},
+    {path: '/forms', component: FormsIndex},
     {path: '/forms/create', component: FormsCreate},
     {path: '/forms/edit/:id', component: FormsEdit},
     {path: '/forms/view/:id', component: FormsView},
     {path: '/passport-view', component: PassportView},
-    {path: '/steps', component: StepIndex},
+    {path: '/', component: StepIndex},
     {path: '/steps/create', component: StepsCreate},
     {path: '/steps/view/:id', component: StepsView},
     {path: '/steps/edit/:id', component: StepsEdit},

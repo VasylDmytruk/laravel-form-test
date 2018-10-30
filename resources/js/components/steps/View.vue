@@ -8,6 +8,9 @@
             <p>{{step.title}}</p>
             <p>{{step.step_order}}</p>
             <p>{{step.healing_methods}}</p>
+
+            <p v-if="step.form && step.form.title">Form title: {{step.form.title}}</p>
+            <form-builder v-if="step.form && step.form.data" type="gui" :form="step.form.data"></form-builder>
         </div>
     </div>
 </template>
@@ -33,7 +36,7 @@
         }),
         methods: {
             ...mapActions({
-                getForm: 'steps/getItem',
+                getStep: 'steps/getItem',
             }),
             ...mapMutations({
                 addMenuItem: 'menu/addItem',
@@ -42,7 +45,7 @@
         },
         created() {
             this.addMenuItem(this.menuItem);
-            this.getForm(this.$route.params.id);
+            this.getStep(this.$route.params.id);
         },
         beforeDestroy() {
             this.removeMenuItem(this.menuItem);

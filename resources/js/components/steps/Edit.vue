@@ -1,18 +1,24 @@
 <template>
     <div>
         <h1>Steps Edit</h1>
-        <step-form :data-model="step" v-on:form-submit="save"></step-form>
+        <step-form :data-model="step" v-on:step-form-submit="save">
+            <template slot="form-form">
+                <form-form :form="step.form"></form-form>
+            </template>
+        </step-form>
     </div>
 </template>
 
 <script>
     import {mapState, mapActions, mapMutations} from 'vuex';
     import StepForm from './Form';
+    import Form from '../forms/Form';
 
     export default {
         name: "StepsEdit",
         components: {
             'step-form': StepForm,
+            'form-form': Form,
         },
         props: {
             menuItem: {
@@ -45,9 +51,14 @@
                 removeMenuItem: 'menu/removeItem',
             }),
             save() {
+                const data = {
+                    step: this.step,
+                    form: this.step.form,
+                };
+
                 this.updateStep({
                     id: this.$route.params.id,
-                    data: this.step,
+                    data: data,
                 })
                     .then(response => {
                         console.log('response', response);

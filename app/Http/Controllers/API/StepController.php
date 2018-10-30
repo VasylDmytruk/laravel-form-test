@@ -7,6 +7,7 @@ use App\Step;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use phpDocumentor\Reflection\Types\Null_;
 
 class StepController extends Controller
 {
@@ -47,6 +48,7 @@ class StepController extends Controller
             return $validatedAttributes;
         }
 
+        // TODO make in one model
         list($stepAttributes, $formAttributes) = $validatedAttributes;
 
         if (array_has($formAttributes, 'data')) {
@@ -95,17 +97,35 @@ class StepController extends Controller
      */
     public function update(Request $request, Step $step)
     {
-        $validatedAttributesOrErrors = $this->validateModels($request->all());
-        if (!\is_array($validatedAttributesOrErrors)) {
-            return $validatedAttributesOrErrors;
+        $validatedAttributes = $this->validateModels($request->all());
+        if (!\is_array($validatedAttributes)) {
+            return $validatedAttributes;
         }
 
-        $step->setRawAttributes($validatedAttributesOrErrors);
-        $saved = $step->save();
+        list($stepAttributes, $formAttributes) = $validatedAttributes;
+
+        if (array_has($formAttributes, 'data')) {
+            $formAttributes['data'] = json_encode($formAttributes['data']);
+        }
+
+        $saved = $step->fill($stepAttributes)->save();
+        $emptyFormAttributes = empty($formAttributes);
+        $formSaved = $emptyFormAttributes ? true : false;
+
+        if ($saved && !$emptyFormAttributes) {
+            $formSaved = $step->form
+                ? $step->form->fill($formAttributes)->save()
+                : $step->form()->create($formAttributes)->save();
+        }
+
+        $saved = $formSaved;
 
         return response([
             'success' => $saved,
-            'data' => $step->getAttributes(),
+            'data' => [
+                'step' => $step->getAttributes(),
+                'form' => $step->form ? $step->form->getAttributes() : [],
+            ],
         ]);
     }
 
@@ -118,7 +138,13 @@ class StepController extends Controller
      */
     public function destroy(Step $step)
     {
-        $deleted = $step->delete();
+        $deleted = false;
+
+        if ($step->form) {
+            $deleted = $step->form->delete();
+        }
+
+        $deleted = $deleted && $step->delete();
 
         return response([
             'success' => $deleted,

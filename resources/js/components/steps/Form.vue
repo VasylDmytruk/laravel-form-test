@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form v-on:submit.prevent="onSubmit">
+        <form @submit.prevent="">
             <div class="form-group">
                 <label for="title">Title</label>
                 <input v-model="dataModel.title" type="text" class="form-control" id="title" required>
@@ -13,11 +13,11 @@
                 <label for="healing_methods">Healing Methods</label>
                 <textarea v-model="dataModel.healing_methods" class="form-control" id="healing_methods" rows="6"></textarea>
             </div>
-
-            <slot name="form-form"></slot>
-
-            <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+
+        <slot name="form-form"></slot>
+
+        <button @click.prevent="onStepFormSubmit" type="submit" class="btn btn-primary">Submit</button>
     </div>
 </template>
 
@@ -31,8 +31,8 @@
             },
         },
         methods: {
-            onSubmit() {
-                this.$emit('form-submit');
+            onStepFormSubmit() {
+                this.$emit('step-form-submit');
             },
         },
     };

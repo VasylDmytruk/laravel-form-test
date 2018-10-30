@@ -2,7 +2,7 @@
     <div>
         <h1>Steps Create</h1>
 
-        <step-form :data-model="step" v-on:form-submit="save">
+        <step-form :data-model="step" v-on:step-form-submit="save">
             <template slot="form-form">
                 <form-form :form="form"></form-form>
             </template>
