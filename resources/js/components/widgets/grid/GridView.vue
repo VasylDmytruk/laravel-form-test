@@ -18,6 +18,7 @@
                             <br>
                             <router-link :to="'/' + action + '/view/' + row.id">View</router-link>
                             <br>
+                            <!-- TODO need change notification way -->
                             <a href="#" v-if="deleteItemFunc" v-on:click.prevent="
                                 deleteItemFunc({id: row.id, index}).then(response => {
                                     $notify({type: 'success', title: 'Deleted', text: 'Item deleted successfully!'});

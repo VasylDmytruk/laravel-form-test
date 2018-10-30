@@ -219,7 +219,7 @@
             return {
                 clients: [],
 
-                createForm: {
+                createStep: {
                     errors: [],
                     name: '',
                     redirect: ''
@@ -286,7 +286,7 @@
             store() {
                 this.persistClient(
                     'post', '/oauth/clients',
-                    this.createForm, '#modal-create-client'
+                    this.createStep, '#modal-create-client'
                 );
             },
 

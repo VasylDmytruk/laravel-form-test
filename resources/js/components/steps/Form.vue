@@ -1,0 +1,41 @@
+<template>
+    <div>
+        <form v-on:submit.prevent="onSubmit">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input v-model="dataModel.title" type="text" class="form-control" id="title" required>
+            </div>
+            <div class="form-group">
+                <label for="step_order">Step Order</label>
+                <input v-model="dataModel.step_order" type="number" class="form-control" id="step_order">
+            </div>
+            <div class="form-group">
+                <label for="healing_methods">Healing Methods</label>
+                <textarea v-model="dataModel.healing_methods" class="form-control" id="healing_methods" rows="6"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</template>
+
+<script>
+    export default {
+        name: 'Form',
+        props: {
+            dataModel: {
+                type: Object,
+                required: true,
+            },
+        },
+        methods: {
+            onSubmit() {
+                this.$emit('form-submit');
+            },
+        },
+    };
+</script>
+
+<style scoped>
+
+</style>

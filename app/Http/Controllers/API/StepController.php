@@ -6,6 +6,7 @@ use App\Http\Resources\StepResource;
 use App\Step;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class StepController extends Controller
 {
@@ -34,16 +35,6 @@ class StepController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -51,7 +42,21 @@ class StepController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedAttributes = $this->validateModel($request->all());
+        if (!\is_array($validatedAttributes)) {
+            return $validatedAttributes;
+        }
+
+        $step = new Step();
+        $step->setRawAttributes($validatedAttributes);
+        $saved = $step->save();
+
+        $success = [
+            'success' => $saved,
+            'data' => $step->getAttributes(),
+        ];
+
+        return response($success);
     }
 
     /**
@@ -66,36 +71,62 @@ class StepController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param Step $step
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Step $step)
     {
-        //
+        $validatedAttributesOrErrors = $this->validateModel($request->all());
+        if (!\is_array($validatedAttributesOrErrors)) {
+            return $validatedAttributesOrErrors;
+        }
+
+        $step->setRawAttributes($validatedAttributesOrErrors);
+        $saved = $step->save();
+
+        return response([
+            'success' => $saved,
+            'data' => $step->getAttributes(),
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Step $step
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(Step $step)
     {
-        //
+        $deleted = $step->delete();
+
+        return response([
+            'success' => $deleted,
+        ]);
+    }
+
+    private function validateModel(array $all)
+    {
+        $validator = Validator::make($all, [
+            'title' => 'required|string|max:255',
+            'step_order' => 'numeric|min:0',
+            'healing_methods' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            $failed = [
+                'success' => false,
+                'errors' => $validator->errors(),
+            ];
+            return response($failed);
+        }
+
+        $validatedAttributes = $validator->validate();
+
+        return $validatedAttributes;
     }
 }
