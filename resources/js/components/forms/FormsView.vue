@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>FormsView: {{form ? form.name : ''}}</h1>
+        <h1>FormsView: {{form ? form.title : ''}}</h1>
 
 
         <div v-if="!form">Loading...</div>

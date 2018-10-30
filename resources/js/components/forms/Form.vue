@@ -1,8 +1,8 @@
 <template>
     <div>
         <p>Name: </p>
-        <input type="text" v-model="form.name">
-        <p v-if="!form.name" class="control-error">form name is required</p>
+        <input type="text" v-model="form.title">
+        <p v-if="!form.title" class="control-error">form name is required</p>
         <form-builder type="template" v-model="form.data"></form-builder>
 
         <p>form builder gui</p>

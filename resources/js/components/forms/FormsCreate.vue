@@ -19,7 +19,7 @@
         data() {
             return {
                 form: {
-                    name: '',
+                    title: '',
                     data: null,
                 },
             }

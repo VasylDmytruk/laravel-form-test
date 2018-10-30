@@ -37,7 +37,7 @@ class FormController extends Controller
     private function validateModel($all)
     {
         $validator = Validator::make($all, [
-            'name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
             'data' => 'required',
         ]);
 

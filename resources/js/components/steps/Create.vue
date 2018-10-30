@@ -22,6 +22,9 @@
                     healing_methods: '',
                     step_order: 0,
                 },
+                form: {
+
+                },
             }
         },
         methods: {

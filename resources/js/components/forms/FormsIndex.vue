@@ -15,7 +15,7 @@
             return {
                 columns: [
                     {label: 'ID', field: 'id'},
-                    {label: 'Name', field: 'name'},
+                    {label: 'Title', field: 'title'},
                     {label: 'Data', field: 'data', type: 'expandable'},
                     {type: 'action'},
                 ],
