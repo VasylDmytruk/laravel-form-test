@@ -14,6 +14,8 @@
                 <textarea v-model="dataModel.healing_methods" class="form-control" id="healing_methods" rows="6"></textarea>
             </div>
 
+            <slot name="form-form"></slot>
+
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>

@@ -42,18 +42,34 @@ class StepController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedAttributes = $this->validateModel($request->all());
+        $validatedAttributes = $this->validateModels($request->all());
         if (!\is_array($validatedAttributes)) {
             return $validatedAttributes;
         }
 
+        list($stepAttributes, $formAttributes) = $validatedAttributes;
+
+        if (array_has($formAttributes, 'data')) {
+            $formAttributes['data'] = json_encode($formAttributes['data']);
+        }
+
         $step = new Step();
-        $step->setRawAttributes($validatedAttributes);
+        $step->setRawAttributes($stepAttributes);
         $saved = $step->save();
+        $form = null;
+
+        if ($saved) {
+            $form = $step->form()->create($formAttributes);
+        }
+
+        $saved = ($form !== null);
 
         $success = [
             'success' => $saved,
-            'data' => $step->getAttributes(),
+            'data' => [
+                'step' => $step->getAttributes(),
+                'form' => $form ? $form->getAttributes() : [],
+            ],
         ];
 
         return response($success);
@@ -79,7 +95,7 @@ class StepController extends Controller
      */
     public function update(Request $request, Step $step)
     {
-        $validatedAttributesOrErrors = $this->validateModel($request->all());
+        $validatedAttributesOrErrors = $this->validateModels($request->all());
         if (!\is_array($validatedAttributesOrErrors)) {
             return $validatedAttributesOrErrors;
         }
@@ -109,13 +125,51 @@ class StepController extends Controller
         ]);
     }
 
-    private function validateModel(array $all)
+    private function validateModels(array $all)
     {
-        $validator = Validator::make($all, [
+        $step = array_get($all, 'step', []);
+        $form = array_get($all, 'form', []);
+
+        $validatedStepAttributesOrErrors = $this->validateStepModel($step);
+        if (!\is_array($validatedStepAttributesOrErrors)) {
+            return $validatedStepAttributesOrErrors;
+        }
+
+        $validatedFormAttributesOrErrors = $this->validateFormModel($form);
+        if (!\is_array($validatedFormAttributesOrErrors)) {
+            return $validatedFormAttributesOrErrors;
+        }
+
+        $stepAttributes = $validatedStepAttributesOrErrors;
+        $formAttributes = $validatedFormAttributesOrErrors;
+
+        return [$stepAttributes, $formAttributes];
+    }
+
+    private function validateStepModel($step)
+    {
+        $rules = [
             'title' => 'required|string|max:255',
             'step_order' => 'numeric|min:0',
             'healing_methods' => 'nullable|string',
-        ]);
+        ];
+
+        return $this->validateModel($step, $rules);
+    }
+
+    private function validateFormModel($form)
+    {
+        $rules = [
+            'title' => 'required|string|max:255',
+            'data' => 'required',
+        ];
+
+        return $this->validateModel($form, $rules);
+    }
+
+    private function validateModel($attributes, $rules)
+    {
+        $validator = Validator::make($attributes, $rules);
 
         if ($validator->fails()) {
             $failed = [
@@ -125,8 +179,6 @@ class StepController extends Controller
             return response($failed);
         }
 
-        $validatedAttributes = $validator->validate();
-
-        return $validatedAttributes;
+        return $validator->validate();
     }
 }

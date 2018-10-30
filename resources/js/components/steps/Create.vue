@@ -2,18 +2,24 @@
     <div>
         <h1>Steps Create</h1>
 
-        <step-form :data-model="step" v-on:form-submit="save"></step-form>
+        <step-form :data-model="step" v-on:form-submit="save">
+            <template slot="form-form">
+                <form-form :form="form"></form-form>
+            </template>
+        </step-form>
     </div>
 </template>
 
 <script>
     import {mapActions} from 'vuex';
-    import Form from './Form';
+    import StepForm from './Form';
+    import Form from '../forms/Form';
 
     export default {
         name: "StepsCreate",
         components: {
-            'step-form': Form
+            'step-form': StepForm,
+            'form-form': Form,
         },
         data() {
             return {
@@ -23,7 +29,8 @@
                     step_order: 0,
                 },
                 form: {
-
+                    title: '',
+                    data: null,
                 },
             }
         },
@@ -32,7 +39,12 @@
                 createStep: 'steps/createItem',
             }),
             save() {
-                this.createStep(this.step)
+                const data = {
+                    step: this.step,
+                    form: this.form,
+                };
+
+                this.createStep(data)
                     .then(response => {
                         const notificationType = response.success ? 'success' : 'error';
                         const notificationText = response.success ? 'Your form saved successfully!' : 'Form validation failed!';

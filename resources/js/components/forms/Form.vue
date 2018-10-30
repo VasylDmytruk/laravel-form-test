@@ -1,12 +1,14 @@
 <template>
     <div>
-        <p>Name: </p>
-        <input type="text" v-model="form.title">
-        <p v-if="!form.title" class="control-error">form name is required</p>
-        <form-builder type="template" v-model="form.data"></form-builder>
+        <div class="form-group">
+            <label for="form-title">Form Title</label>
+            <input v-model="form.title" type="text" class="form-control" id="form-title">
+            <div v-if="!form.title" class="alert-danger">
+                Form Title is required.
+            </div>
+        </div>
 
-        <p>form builder gui</p>
-        <form-builder v-if="form.data" type="gui" :form="form.data"></form-builder>
+        <form-builder type="template" v-model="form.data"></form-builder>
     </div>
 </template>
 
