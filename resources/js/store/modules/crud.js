@@ -48,6 +48,17 @@ export default {
                 state.allItems.splice(index, 1);
             }
         },
+        updateSortableItems(state, {newItems, sortField}) {
+            sortField = sortField || 'sort_order';
+
+            for (const index in newItems) {
+                newItems[index][sortField] = index;
+            }
+
+            state.allItems = newItems;
+
+            // TODO save to db
+        },
     },
     actions: {
         getItems({commit, state}) {

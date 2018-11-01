@@ -49,6 +49,7 @@
                         const notificationType = response.success ? 'success' : 'error';
                         const notificationText = response.success ? 'Your form saved successfully!' : 'Form validation failed!';
                         this.$notify({type: notificationType, title: 'Save result', text: notificationText});
+                        this.$router.push('/');
                     })
                     .catch(error => {
                         this.$notify({

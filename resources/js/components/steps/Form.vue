@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="form-container">
         <form @submit.prevent="">
             <div class="form-group">
                 <label for="title">Title</label>
@@ -39,5 +39,7 @@
 </script>
 
 <style scoped>
-
+    .form-container {
+        margin-bottom: 10px;
+    }
 </style>

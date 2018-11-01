@@ -1,7 +1,6 @@
 import cloneDeep from 'clone-deep';
 import crudModule from '../modules/crud';
 import crud from '../../api/crud';
-import formsCrudModule from './forms';
 
 const steps = cloneDeep(crud);
 const stepsModule = cloneDeep(crudModule);

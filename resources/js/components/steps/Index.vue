@@ -1,6 +1,12 @@
 <template>
     <div>
-        <grid-view :columns="columns" :rows="allItems" :delete-item-func="deleteItem" :action="action"></grid-view>
+        <grid-view
+                :columns="columns"
+                :rows="allItems"
+                :delete-item-func="deleteItem"
+                :action="action"
+                v-on:rows-update="rowsUpdate">
+        </grid-view>
     </div>
 </template>
 
@@ -33,6 +39,9 @@
                 getItems: 'steps/getItems',
                 deleteItem: 'steps/deleteItem',
             }),
+            rowsUpdate(newRows) {
+                this.$store.commit('steps/updateSortableItems', {newItems:newRows});
+            },
         },
     };
 </script>
