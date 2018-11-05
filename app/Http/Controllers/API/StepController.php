@@ -217,7 +217,7 @@ class StepController extends Controller
     private function validateFormModel($form)
     {
         $rules = [
-            'title' => 'required|string|max:255',
+            'title' => 'nullable|string|max:255',
             'data' => 'required',
         ];
 
