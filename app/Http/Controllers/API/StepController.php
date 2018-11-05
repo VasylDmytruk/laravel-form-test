@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\StepResource;
 use App\Step;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
-use phpDocumentor\Reflection\Types\Null_;
 
 class StepController extends Controller
 {
@@ -25,6 +24,30 @@ class StepController extends Controller
         $this->steps = $steps;
     }
 
+    public function sort(Request $request)
+    {
+        $itemsToSort = $request->all();
+        $ids = array_column($itemsToSort, 'id');
+        $indexedItemsToSort = [];
+        foreach ($itemsToSort as $item) {
+            $indexedItemsToSort[$item['id']] = $item;
+        }
+
+        $steps = $this->steps::whereIn('id', $ids)->get();
+        if (is_iterable($steps)) {
+            foreach ($steps as $step) {
+                /* @var $step Step */
+                $step->step_order = $indexedItemsToSort[$step->id]['step_order']
+                    ?? $indexedItemsToSort[$step->id]['step_order'];
+                $step->save();
+            }
+        }
+
+        $response = ['reordered' => true];
+
+        return response($response);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -32,13 +55,13 @@ class StepController extends Controller
      */
     public function index()
     {
-        return StepResource::collection($this->steps::all());
+        return StepResource::collection($this->steps::orderBy('step_order')->get());
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)

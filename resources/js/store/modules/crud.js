@@ -50,14 +50,24 @@ export default {
         },
         updateSortableItems(state, {newItems, sortField}) {
             sortField = sortField || 'sort_order';
+            var sortedItems = [];
 
             for (const index in newItems) {
                 newItems[index][sortField] = index;
+
+                sortedItems.push({id: newItems[index]['id'], step_order: index});
             }
 
             state.allItems = newItems;
 
-            // TODO save to db
+            state.crudApi.sortItems(
+                response => {
+                },
+                error => {
+                    console.error('error', error);
+                },
+                sortedItems
+            );
         },
     },
     actions: {
