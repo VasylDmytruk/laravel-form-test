@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Validator;
 
 class StepController extends Controller
 {
+    private const MAX_STEP_ORDER = '1000000';
+
     /**
      * @var Step
      */
@@ -72,10 +74,16 @@ class StepController extends Controller
         }
 
         // TODO make in one model
-        list($stepAttributes, $formAttributes) = $validatedAttributes;
+        [$stepAttributes, $formAttributes] = $validatedAttributes;
 
         if (array_has($formAttributes, 'data')) {
             $formAttributes['data'] = json_encode($formAttributes['data']);
+        }
+
+        $stepOrder = array_get($stepAttributes, 'step_order');
+        if ($stepOrder === null) {
+            // TODO compute max value somehow
+            $stepAttributes['step_order'] = self::MAX_STEP_ORDER;
         }
 
         $step = new Step();
@@ -199,7 +207,7 @@ class StepController extends Controller
     {
         $rules = [
             'title' => 'required|string|max:255',
-            'step_order' => 'numeric|min:0',
+            'step_order' => 'nullable|numeric|min:0',
             'healing_methods' => 'nullable|string',
         ];
 

@@ -1,54 +1,18 @@
 <template>
     <div>
         <div>Items: {{rows.length}}</div>
-        <div class="table-wrap">
-            <!--<table class="table table-bordered grid-table-fixed">-->
-                <!--<draggable v-model="rowsForSorting">-->
-                    <!--<tr slot="header">-->
-                        <!--<template v-for="column in columns">-->
-                            <!--<th v-if="column.type === 'action'"></th>-->
-                            <!--<th v-else>{{column.label}}</th>-->
-                        <!--</template>-->
-                    <!--</tr>-->
-                    <!--<tr v-for="(row, index) in rows" :key="row.id">-->
-                        <!--<template v-for="column in columns">-->
-                            <!--<td v-if="column.type === 'action' && action">-->
-                                <!--&lt;!&ndash; TODO refactor to allow customisation &ndash;&gt;-->
-                                <!--<router-link :to="'/' + action + '/edit/' + row.id">Edit</router-link>-->
-                                <!--<br>-->
-                                <!--<router-link :to="'/' + action + '/view/' + row.id">View</router-link>-->
-                                <!--<br>-->
-                                <!--&lt;!&ndash; TODO need change notification way &ndash;&gt;-->
-                                <!--<a href="#" v-if="deleteItemFunc" v-on:click.prevent="-->
-                                    <!--deleteItemFunc({id: row.id, index}).then(response => {-->
-                                        <!--$notify({type: 'success', title: 'Deleted', text: 'Item deleted successfully!'});-->
-                                    <!--})-->
-                                    <!--.catch(error => {-->
-                                        <!--$notify({type: 'error', title: 'Not deleted', text: 'Can not delete item!'});-->
-                                    <!--});-->
-                                <!--">Delete</a>-->
-                            <!--</td>-->
-                            <!--<td v-else-if="column.type === 'expandable'" class="word-limit">-->
-                                <!--<div class="limit-div" v-if="canExpandData(index)">{{row[column.field]}}</div>-->
-                                <!--<div v-else><a href="#" @click.prevent="setExpandDataItem(index)">Show</a></div>-->
-                            <!--</td>-->
-                            <!--<td v-else>{{row[column.field]}}</td>-->
-                        <!--</template>-->
-                    <!--</tr>-->
-                <!--</draggable>-->
-            <!--</table>-->
-
+        <div class="table-wrap container">
             <div class="div-table">
-                <div class="div-table-row">
+                <div class="div-table-row row">
                     <template v-for="column in columns">
-                        <div v-if="column.type === 'action'" class="div-table-cell"></div>
-                        <div v-else class="div-table-cell">{{column.label}}</div>
+                        <div v-if="column.type === 'action'" class="div-table-cell" :class="getColClass()"></div>
+                        <div v-else class="div-table-cell" :class="getColClass()">{{column.label}}</div>
                     </template>
                 </div>
                 <draggable :list="rowsForSorting" @end="endDragging">
-                    <div class="div-table-row" v-for="(row, index) in rowsForSorting" :key="row.id">
+                    <div class="div-table-row row" v-for="(row, index) in rowsForSorting" :key="row.id">
                         <template v-for="column in columns">
-                            <div v-if="column.type === 'action' && action" class="div-table-cell">
+                            <div v-if="column.type === 'action' && action" class="div-table-cell" :class="getColClass()">
                                 <!-- TODO refactor to allow customisation -->
                                 <router-link :to="'/' + action + '/edit/' + row.id">Edit</router-link>
                                 <br>
@@ -64,11 +28,12 @@
                                             });
                                         ">Delete</a>
                             </div>
-                            <div v-else-if="column.type === 'expandable'" class="word-limit div-table-cell">
+                            <div v-else-if="column.type === 'expandable'" class="word-limit div-table-cell"
+                                 :class="getColClass()">
                                 <div class="limit-div" v-if="canExpandData(index)">{{row[column.field]}}</div>
                                 <div v-else><a href="#" @click.prevent="setExpandDataItem(index)">Show</a></div>
                             </div>
-                            <div v-else class="div-table-cell">{{row[column.field]}}</div>
+                            <div v-else class="div-table-cell" :class="getColClass()">{{row[column.field]}}</div>
                         </template>
                     </div>
                 </draggable>
@@ -99,6 +64,10 @@
             deleteItemFunc: {
                 type: Function,
             },
+            maxGridCols: {
+                type: Number,
+                default: 12,
+            },
         },
         computed: {
             rowsForSorting() {
@@ -119,6 +88,23 @@
             },
             endDragging(e) {
                 this.$emit('rows-update', this.rowsForSorting);
+            },
+            getColClass() {
+                const columnsLength = this.columns.length;
+                let colClass = 'col-md-';
+                let index = '1';
+
+                if (columnsLength > this.maxGridCols) {
+                    index = this.maxGridCols;
+                } else if (columnsLength < 1) {
+                    index = 1;
+                } else {
+                    index = this.maxGridCols / columnsLength;
+                }
+
+                colClass += parseInt(index);
+
+                return colClass;
             },
         },
     };
@@ -141,15 +127,8 @@
         max-height: 100px;
     }
 
-    .div-table {
-        display: table;
-    }
-
-    .div-table-row {
-        display: table-row;
-    }
-
     .div-table-cell {
-        display: table-cell;
+        border: 1px solid;
     }
+
 </style>
