@@ -11,7 +11,6 @@ stepsModule.mutations.seItem = function (state, item) {
     state.lastItem = item;
 
     if (item.form && item.form.data) {
-        console.log('item.form.data steps.js', item.form.data);
         try {
             state.lastItem.form.data = JSON.parse(item.form.data);
         } catch (e) {
