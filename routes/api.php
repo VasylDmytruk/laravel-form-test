@@ -19,6 +19,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('forms', 'API\FormController');
+Route::apiResource('steps', 'API\StepController');
 
+Route::post('steps/sort', 'API\StepController@sort');
 //Route::get('forms', 'API\FormController@index');
 //Route::post('forms', 'API\FormController@store');

@@ -21,7 +21,7 @@
             menuItem: viewMenuItemProp,
         },
         computed: mapState({
-            form: state => state.forms.lastForm,
+            form: state => state.forms.lastItem,
         }),
         created() {
             this.addMenuItem(this.menuItem);
@@ -32,8 +32,8 @@
         },
         methods: {
             ...mapActions({
-                getForm: 'forms/getForm',
-                updateForm: 'forms/updateForm',
+                getForm: 'forms/getItem',
+                updateForm: 'forms/updateItem',
             }),
             ...mapMutations({
                 addMenuItem: 'menu/addItem',
@@ -42,7 +42,7 @@
             save() {
                 this.updateForm({
                     id: this.$route.params.id,
-                    form: this.form,
+                    data: this.form,
                 })
                     .then(response => {
                         const notificationType = response.success ? 'success' : 'error';

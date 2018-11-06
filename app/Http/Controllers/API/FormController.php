@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Form;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\FormCollection;
 use App\Http\Resources\FormResource;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 
@@ -31,13 +31,13 @@ class FormController extends Controller
     {
         $this->forms = $forms;
 
-//        $this->middleware('auth:api');
+        $this->middleware('auth:api');
     }
 
     private function validateModel($all)
     {
         $validator = Validator::make($all, [
-            'name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
             'data' => 'required',
         ]);
 
@@ -61,21 +61,19 @@ class FormController extends Controller
      */
     public function index()
     {
-        //
-
         return new FormCollection($this->forms::all());
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
+     * @param  Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $validatedAttributes = $this->validateModel($request->all());
-        if (!is_array($validatedAttributes)) {
+        if (!\is_array($validatedAttributes)) {
             return $validatedAttributes;
         }
 
@@ -116,12 +114,12 @@ class FormController extends Controller
      */
     public function update(Request $request, Form $form)
     {
-        $validatedAttributes = $this->validateModel($request->all());
-        if (!is_array($validatedAttributes)) {
-            return $validatedAttributes;
+        $validatedAttributesOrErrors = $this->validateModel($request->all());
+        if (!\is_array($validatedAttributesOrErrors)) {
+            return $validatedAttributesOrErrors;
         }
 
-        $form->setRawAttributes($validatedAttributes);
+        $form->setRawAttributes($validatedAttributesOrErrors);
         if (!empty($form->data)) {
             $form->data = json_encode($form->data);
         }

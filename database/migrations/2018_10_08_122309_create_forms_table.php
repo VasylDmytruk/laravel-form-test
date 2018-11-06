@@ -15,9 +15,12 @@ class CreateFormsTable extends Migration
     {
         Schema::create('forms', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', 255);
+            $table->string('title', 255)->nullable();
             $table->text('data');
+            $table->unsignedInteger('step_id');
             $table->timestamps();
+
+            $table->foreign('step_id')->references('id')->on('steps')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

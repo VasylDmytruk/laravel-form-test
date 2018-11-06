@@ -19,14 +19,14 @@
         data() {
             return {
                 form: {
-                    name: '',
+                    title: '',
                     data: null,
                 },
             }
         },
         methods: {
             ...mapActions({
-                createForm: 'forms/createForm',
+                createForm: 'forms/createItem',
             }),
             save() {
                 if (!this.form.data._uniqueId) {

@@ -1,12 +1,11 @@
 <template>
-    <div>
-        <p>Name: </p>
-        <input type="text" v-model="form.name">
-        <p v-if="!form.name" class="control-error">form name is required</p>
-        <form-builder type="template" v-model="form.data"></form-builder>
+    <div v-if="form">
+        <div class="form-group">
+            <label for="form-title">Form Title</label>
+            <input v-model="form.title" type="text" class="form-control" id="form-title">
+        </div>
 
-        <p>form builder gui</p>
-        <form-builder v-if="form.data" type="gui" :form="form.data"></form-builder>
+        <form-builder type="template" v-model="form.data"></form-builder>
     </div>
 </template>
 
@@ -15,7 +14,6 @@
         name: "Form",
         props: {
             form: {
-                type: Object,
                 required: true,
             },
         },

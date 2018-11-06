@@ -19,12 +19,19 @@ import FormsCreate from './components/forms/FormsCreate';
 import FormsEdit from './components/forms/FormsEdit';
 import FormsView from './components/forms/FormsView';
 import PassportView from './components/Passport';
+import StepIndex from './components/steps/Index';
+import StepsCreate from './components/steps/Create';
+import StepsView from './components/steps/View';
+import StepsEdit from './components/steps/Edit';
+import VueGoodTablePlugin from 'vue-good-table';
+import 'vue-good-table/dist/vue-good-table.css';
 
 window.Vue = require('vue');
 
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
 Vue.use(Notifications);
+Vue.use(VueGoodTablePlugin);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -39,11 +46,15 @@ Vue.component('passport-personal-access-tokens', require('./components/passport/
 Vue.component('form-builder', FormBuilder);
 
 const routes = [
-    {path: '/', component: FormsIndex},
+    {path: '/forms', component: FormsIndex},
     {path: '/forms/create', component: FormsCreate},
     {path: '/forms/edit/:id', component: FormsEdit},
     {path: '/forms/view/:id', component: FormsView},
     {path: '/passport-view', component: PassportView},
+    {path: '/', component: StepIndex},
+    {path: '/steps/create', component: StepsCreate},
+    {path: '/steps/view/:id', component: StepsView},
+    {path: '/steps/edit/:id', component: StepsEdit},
 ];
 
 const router = new VueRouter({routes});

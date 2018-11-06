@@ -13,3 +13,6 @@ yarn-error.log
 .env
 .phpunit.result.cache
 !/app/
+/package-lock.json
+/composer.lock
+/public/js/app.js
