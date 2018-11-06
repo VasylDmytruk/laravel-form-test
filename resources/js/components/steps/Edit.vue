@@ -61,7 +61,6 @@
                     data: data,
                 })
                     .then(response => {
-                        console.log('response', response);
                         const notificationType = response.success ? 'success' : 'error';
                         const notificationText = response.success ? 'Your step saved successfully!' : 'Form validation failed!';
                         this.$notify({type: notificationType, title: 'Save result', text: notificationText});

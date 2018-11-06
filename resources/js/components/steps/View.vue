@@ -6,8 +6,7 @@
         <div v-if="!step">Loading...</div>
         <div v-else>
             <p>{{step.title}}</p>
-            <p>{{step.step_order}}</p>
-            <p>{{step.healing_methods}}</p>
+            <p class="white-space-pre">{{step.healing_methods}}</p>
 
             <p v-if="step.form && step.form.title">Form title: {{step.form.title}}</p>
             <form-builder v-if="step.form && step.form.data" type="gui" :form="step.form.data"></form-builder>
