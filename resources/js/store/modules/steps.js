@@ -7,17 +7,29 @@ const stepsModule = cloneDeep(crudModule);
 
 steps.route = 'steps';
 stepsModule.state.crudApi = steps;
-stepsModule.mutations.seItem = function (state, item) {
-    state.lastItem = item;
 
+stepsModule.convertItemFormDataIfNeed = function (item) {
     if (item.form && item.form.data) {
         try {
-            state.lastItem.form.data = JSON.parse(item.form.data);
+            item.form.data = JSON.parse(item.form.data);
         } catch (e) {
         }
     }
+};
 
+stepsModule.mutations.seItem = function (state, item) {
+    stepsModule.convertItemFormDataIfNeed(item);
+
+    state.lastItem = item;
     state.setCachedItem(state.lastItem);
+};
+
+stepsModule.mutations.setItems = function (state, items) {
+    items.forEach(function (item) {
+        stepsModule.convertItemFormDataIfNeed(item);
+    });
+
+    state.allItems = items;
 };
 
 export default stepsModule;

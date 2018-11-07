@@ -23,6 +23,7 @@ import StepIndex from './components/steps/Index';
 import StepsCreate from './components/steps/Create';
 import StepsView from './components/steps/View';
 import StepsEdit from './components/steps/Edit';
+import StepsFlow from './components/steps-flow/Index';
 import VueGoodTablePlugin from 'vue-good-table';
 import 'vue-good-table/dist/vue-good-table.css';
 
@@ -50,11 +51,15 @@ const routes = [
     {path: '/forms/create', component: FormsCreate},
     {path: '/forms/edit/:id', component: FormsEdit},
     {path: '/forms/view/:id', component: FormsView},
+
     {path: '/passport-view', component: PassportView},
+
     {path: '/', component: StepIndex},
     {path: '/steps/create', component: StepsCreate},
     {path: '/steps/view/:id', component: StepsView},
     {path: '/steps/edit/:id', component: StepsEdit},
+
+    {path: '/steps/flow', component: StepsFlow},
 ];
 
 const router = new VueRouter({routes});
