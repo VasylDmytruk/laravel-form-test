@@ -17,14 +17,48 @@
         },
         data() {
             return {
-                formData: 'hello',
+                formData: {},
+                valid: true,
             };
         },
         methods: {
             submitForm() {
-                // TODO add validation
+                this.validateFormData();
 
-                this.$emit('form-submit', this.formBuilderData);
+                if (this.valid) {
+                    this.$emit('form-submit', this.formData);
+                } else {
+                    console.log('NOT VALID');
+                }
+            },
+            validateFormData() {
+                this.formBuilderData.sections.forEach(section => {
+                    this.iterateSection(section);
+                });
+            },
+            iterateSection(section) {
+                section.rows.forEach(row => {
+                    this.iterateRow(row);
+                });
+            },
+            iterateRow(row) {
+                row.controls.forEach(control => {
+                    this.iterateControl(control);
+                });
+            },
+            iterateControl(control) {
+                this.validateControl(control);
+                this.formData[control.name] = control.value;
+            },
+            validateControl(control) {
+                // TODO validate control
+
+                if (control.required && control.value === null) {
+                    // TODO add validation false view to form gui
+                    control.valid = false;
+                    control.validationMessage = `"${control.label}" is required`;
+                    this.valid = false;
+                }
             },
         },
     };
