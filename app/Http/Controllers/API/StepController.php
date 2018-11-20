@@ -23,6 +23,8 @@ class StepController extends Controller
      */
     public function __construct(Step $steps)
     {
+        $this->middleware('auth:api');
+
         $this->steps = $steps;
     }
 

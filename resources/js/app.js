@@ -26,6 +26,7 @@ import StepsEdit from './components/steps/Edit';
 import StepsFlow from './components/steps-flow/Index';
 import VueGoodTablePlugin from 'vue-good-table';
 import 'vue-good-table/dist/vue-good-table.css';
+import VeeValidate from 'vee-validate';
 
 window.Vue = require('vue');
 
@@ -33,6 +34,7 @@ Vue.use(VueRouter);
 Vue.use(BootstrapVue);
 Vue.use(Notifications);
 Vue.use(VueGoodTablePlugin);
+Vue.use(VeeValidate);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
