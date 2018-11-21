@@ -14,6 +14,12 @@ class StepTimeResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'step' => $this->step ?? ['title' => ''],
+            'user' => $this->user ?? ['name' => ''],
+            'spent_time' => $this->spent_time,
+            'created_at' => $this->created_at,
+        ];
     }
 }

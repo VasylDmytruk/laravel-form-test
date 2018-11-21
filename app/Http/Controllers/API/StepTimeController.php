@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Resources\StepTimeResource;
 use App\StepTime;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -10,6 +11,22 @@ use Illuminate\Support\Facades\Validator;
 
 class StepTimeController extends Controller
 {
+    /**
+     * @var StepTime
+     */
+    private $stepTimes;
+
+
+    /**
+     * StepTimeController constructor.
+     *
+     * @param StepTime $stepTime
+     */
+    public function __construct(StepTime $stepTime)
+    {
+        $this->stepTimes = $stepTime;
+    }
+
     private function validateModel($all)
     {
         $validator = Validator::make($all, [
@@ -23,6 +40,7 @@ class StepTimeController extends Controller
                 'success' => false,
                 'errors' => $validator->errors(),
             ];
+
             return response($failed);
         }
 
@@ -34,14 +52,11 @@ class StepTimeController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
-        $this->middleware('auth:api');
-
-        dump('hello');
-        die;
+        return StepTimeResource::collection($this->stepTimes::orderBy('created_at', 'desc')->get());
     }
 
     /**
