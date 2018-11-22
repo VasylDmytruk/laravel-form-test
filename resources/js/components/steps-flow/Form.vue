@@ -15,7 +15,7 @@
                 <!--{{ errors.first(validatorObj.name) }}-->
             <!--</span>-->
 
-            <input v-if="!isStepDone()" type="submit" class="btn btn-success" value="Submit">
+            <input v-if="!isStepDone()" type="submit" class="btn btn-info" value="Submit">
             <a v-else type="submit" class="btn disabled" href="#" @click.prevent="">Submit</a>
 
 
@@ -82,7 +82,7 @@
                 // }
             },
             validateFormData() {
-                console.log('validateFormData');
+                // console.log('validateFormData');
                 this.formBuilderData.sections.forEach(section => {
                     this.iterateSection(section);
                 });

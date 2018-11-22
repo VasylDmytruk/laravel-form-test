@@ -16,6 +16,11 @@
         <slot name="form"></slot>
 
         <div>
+            <a href="#" class="btn btn-success" @click.prevent="finishHandler()">Finish</a>
+            <a href="#" class="btn btn-danger" @click.prevent="cancelHandler()">Cancel</a>
+        </div>
+
+        <div>
             <span class="vgt-pull-left">
                 <a href="#" :class="!hasPrevStep() ? 'disabled' : ''" @click.prevent="prevStep()">Prev</a>
             </span>
@@ -40,6 +45,9 @@
         computed: mapState({
             activeStep: state => state.activeStep.activeStep,
         }),
+        created () {
+            console.log('flow created this.activeStep', this.activeStep.title);
+        },
         methods: {
             ...mapMutations({
                 setActiveStep: 'activeStep/setActiveStep',
@@ -87,13 +95,11 @@
             resetActiveStepParentChangeFlag() {
                 this.activeStepParentChangeFlag = false;
             },
-        },
-        watch: {
-            steps(newSteps) {
-                // TODO maybe move to created, maybe
-                if (this.activeStep.id === null && newSteps.length) {
-                    this.setActiveStep({step: newSteps[0], index: 0});
-                }
+            finishHandler() {
+                this.$emit('step-finished');
+            },
+            cancelHandler() {
+                this.$emit('step-canceled');
             },
         },
     };

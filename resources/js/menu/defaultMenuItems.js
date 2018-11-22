@@ -5,5 +5,5 @@ export default [
     // {url: '/forms/create', label: 'Create Form'},
     {url: '/steps/create', label: 'Create Step'},
     {url: '/steps/flow', label: 'Steps flow'},
-    {url: '/step-time', label: 'Step times'},
+    {url: '/step-procedure', label: 'Step procedures'},
 ];
