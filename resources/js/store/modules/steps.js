@@ -1,33 +1,20 @@
 import cloneDeep from 'clone-deep';
 import crudModule from '../modules/crud';
-import crud from '../../api/crud';
+import steps from '../../api/setpsApiCrud';
+import FormDataConverter from '../../helpers/FormDataConverter';
 
-const steps = cloneDeep(crud);
 const stepsModule = cloneDeep(crudModule);
-
-steps.route = 'steps';
 stepsModule.state.crudApi = steps;
 
-stepsModule.convertItemFormDataIfNeed = function (item) {
-    if (item.form && item.form.data) {
-        try {
-            item.form.data = JSON.parse(item.form.data);
-        } catch (e) {
-        }
-    }
-};
-
 stepsModule.mutations.seItem = function (state, item) {
-    stepsModule.convertItemFormDataIfNeed(item);
+    FormDataConverter.convertItemFormDataIfNeed(item);
 
     state.lastItem = item;
     state.setCachedItem(state.lastItem);
 };
 
 stepsModule.mutations.setItems = function (state, items) {
-    items.forEach(function (item) {
-        stepsModule.convertItemFormDataIfNeed(item);
-    });
+    FormDataConverter.convertItemsFormDataIfNeed(items);
 
     state.allItems = items;
 };

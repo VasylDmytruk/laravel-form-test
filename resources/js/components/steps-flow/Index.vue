@@ -1,6 +1,6 @@
 <template>
     <div>
-        <flow :steps="steps" @step-finished="stepFinishedHandler()" @step-canceled="stepCanceledHandler()">
+        <flow :steps="steps" @step-finished="stepFinishedHandler()" @step-canceled="stepCanceledHandler">
 
             <template slot="form" v-if="activeStep.form.data">
                 <flow-form
@@ -17,7 +17,6 @@
     import {mapState, mapMutations, mapActions} from 'vuex';
     import Flow from './Flow';
     import Form from './Form';
-    import cloneDeep from 'clone-deep';
 
     export default {
         name: 'Index',
@@ -26,29 +25,24 @@
             'flow-form': Form,
         },
         computed: mapState({
-            serverSteps: state => state.steps.allItems,
             activeStep: state => state.activeStep.activeStep,
-            // TODO add to vuex doneSteps[]
+            steps: state => state.doneSteps.doneSteps,
         }),
         data() {
             return {
                 startTime: 0,
-                steps: [],
             };
         },
         created() {
-            console.log('created steps-flow/index***************************', this.activeStep.title);
-            this.getSteps();
+            this.getDoneSteps();
 
             this.startTime = this.getCurrentTime();
         },
-        destroyed() {
-            console.log('destroyed steps-flow/index---------------------------', this.activeStep.title);
-        },
         methods: {
             ...mapActions({
-                getSteps: 'steps/getItems',
                 createStepTime: 'stepProcedures/createItem',
+                getDoneSteps: 'doneSteps/getDoneSteps',
+                resetDoneSteps: 'doneSteps/resetDoneSteps',
             }),
             ...mapMutations({
                 setActiveStepDone: 'activeStep/setDone',
@@ -127,22 +121,16 @@
 
             stepCanceledHandler() {
                 // |TODO Reset doneSteps
+
+                console.log('stepCanceledHandler');
+                // TODO fix error, finish it
+                this.resetDoneSteps();
             },
         },
         watch: {
-            serverSteps(newSteps) {
-                console.log('watch steps', this.activeStep.title);
+            steps(newSteps) {
                 if (this.activeStep.id === null) {
                     this.setActiveFirstStep(newSteps);
-                }
-
-                if (!this.steps.length && newSteps.length) {
-                    this.steps = newSteps;
-                } else if (this.steps.length !== newSteps.length) {
-                    // merge
-                    console.log('before merge', cloneDeep(this.steps));
-                    this.steps = this.mergeSteps(newSteps, this.steps);
-                    console.log('after merge', this.steps);
                 }
             },
         },

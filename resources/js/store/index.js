@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import forms from './modules/forms';
 import steps from './modules/steps';
 import stepProcedures from './modules/stepProcedures';
+import doneSteps from './modules/doneSteps';
 import menu from './modules/menu';
 import activeStep from './modules/activeStep';
 
@@ -13,6 +14,7 @@ export default new Vuex.Store({
         forms,
         steps,
         stepProcedures,
+        doneSteps,
         menu,
         activeStep,
     },
