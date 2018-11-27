@@ -81,10 +81,14 @@ class StepProcedureController extends Controller
         try {
             DB::beginTransaction();
 
-            $stepProcedure = StepProcedure::createByAttributes($attributes);
+            $stepProcedure = StepProcedure::createByAttributes($validatedAttributes);
 
-            $doneStepAttributes = array_get($attributes, static::ATTR_DONE_STEPS, []);
+            $doneStepAttributes = array_get($validatedAttributes, static::ATTR_DONE_STEPS, []);
             foreach ($doneStepAttributes as $doneStepItemsAttribute) {
+                if (array_has($doneStepItemsAttribute, 'form_data_value')) {
+                    $stringFormDataValue = json_encode(array_get($doneStepItemsAttribute, 'form_data_value'));
+                    $doneStepItemsAttribute['form_data_value'] = $stringFormDataValue;
+                }
                 $doneStep = new DoneStep($doneStepItemsAttribute);
                 if (!$stepProcedure->doneSteps()->save($doneStep)) {
                     throw new ModelSaveException('Can not save ' . DoneStep::class);

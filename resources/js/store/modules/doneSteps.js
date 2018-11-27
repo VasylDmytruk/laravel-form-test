@@ -6,6 +6,31 @@ export default {
     namespaced: true,
     state: {
         doneSteps: [],
+        allStepsDone: false,
+        getDataForSaving() {
+            const doneStepsForSaving = [];
+            let totalSpentTime = 0;
+
+            this.doneSteps.forEach(item => {
+                const itemForSaving = {
+                    step_id: item.id,
+                    form_data_value: item.form.data,
+                    // TODO change it
+                    spent_time: 1,
+                };
+
+                totalSpentTime += itemForSaving.spent_time;
+
+                doneStepsForSaving.push(itemForSaving);
+            });
+
+            const dataForSaving = {
+                done_steps: doneStepsForSaving,
+                total_spent_time: totalSpentTime,
+            };
+
+            return dataForSaving;
+        },
     },
     mutations: {
         setDoneSteps(state, items) {
@@ -20,6 +45,8 @@ export default {
 
                     state.doneSteps.push(item);
                 }
+            } else if ((state.doneSteps.length - items.length) > 0) {
+                // TODO implement merging
             }
         },
         resetDoneSteps(state) {
@@ -40,9 +67,20 @@ export default {
         resetDoneSteps({commit, state}) {
             commit('resetDoneSteps');
 
-            this.getDoneSteps({commit, state});
+            stepsApiCrud.getItems(
+                items => {
+                    commit('setDoneSteps', items);
+                },
+                error => {
+                    commit('setError', error);
+                },
+            );
         },
-        createDoneSteps({commit, state}, data) {
+        createDoneSteps({commit, state}) {
+            const data = state.getDataForSaving();
+
+            console.log('createDoneSteps', data);
+
             return new Promise((resolve, reject) => {
                 stepProceduresApiCrud.createItem(
                     response => {
@@ -56,5 +94,20 @@ export default {
             });
         },
     },
-    getters: {},
+    getters: {
+        areAllDone: (state) => () => {
+            let allDone = true;
+
+            for (let index in state.doneSteps) {
+                const item = state.doneSteps[index];
+
+                if (!item.done) {
+                    allDone = false;
+                    break;
+                }
+            }
+
+            return allDone;
+        },
+    },
 };

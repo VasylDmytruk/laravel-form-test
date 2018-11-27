@@ -9,4 +9,8 @@ export default class DateTimeHelper {
 
         return formattedTime;
     }
+
+    static getCurrentTime() {
+        return Math.round((new Date()).getTime() / 1000);
+    }
 }

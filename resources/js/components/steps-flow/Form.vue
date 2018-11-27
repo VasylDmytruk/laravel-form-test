@@ -53,6 +53,7 @@
                 if (this.isStepDone()) {
                     return;
                 }
+
                 // console.log('this.$validator', this.$validator);
                 // console.log('this.$validator.errors', this.$validator.errors);
                 // console.log('this.$validator.fields', this.$validator.fields);
@@ -66,9 +67,10 @@
                 //     console.error("Correct them errors!**************", result);
                 // });
 
-                this.validateFormData();
+                // this.validateFormData();
 
 
+                console.log('this.$emit(\'form-submit', this.formData);
                 this.$emit('form-submit', this.formData);
 
 

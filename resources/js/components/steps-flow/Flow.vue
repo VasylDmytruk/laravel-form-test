@@ -45,9 +45,6 @@
         computed: mapState({
             activeStep: state => state.activeStep.activeStep,
         }),
-        created () {
-            console.log('flow created this.activeStep', this.activeStep.title);
-        },
         methods: {
             ...mapMutations({
                 setActiveStep: 'activeStep/setActiveStep',

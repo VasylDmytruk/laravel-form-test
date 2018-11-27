@@ -5,6 +5,12 @@ namespace App;
 use App\Exceptions\ModelSaveException;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class StepProcedure
+ *
+ * @property DoneStep[] doneSteps
+ * @property User user
+ */
 class StepProcedure extends Model
 {
     /**
@@ -30,5 +36,10 @@ class StepProcedure extends Model
     public function doneSteps()
     {
         return $this->hasMany(DoneStep::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

@@ -22,8 +22,8 @@ export default {
             state.activeStep = step;
             state.activeStep.index = index;
         },
-        resetActiveStep() {
-            this.activeStep = defaultActiveStep;
+        resetActiveStep(state) {
+            state.activeStep = defaultActiveStep;
         },
         setDone(state) {
             Vue.set(state.activeStep, 'done', true);
