@@ -15,8 +15,7 @@ export default {
                 const itemForSaving = {
                     step_id: item.id,
                     form_data_value: item.form.data,
-                    // TODO change it
-                    spent_time: 1,
+                    spent_time: item.spent_time,
                 };
 
                 totalSpentTime += itemForSaving.spent_time;

@@ -63,7 +63,7 @@
             formSubmitHandler(formData) {
                 // TODO need some notification of sequence of this code
                 const endTime = DateTimeHelper.getCurrentTime();
-                // this.processTime(endTime);
+                this.processTime(endTime);
 
                 this.setActiveStepDone();
 
@@ -77,21 +77,7 @@
             },
 
             processTime(endTime) {
-                const diff = endTime - this.startTime;
-
-                const stepTime = {
-                    step_id: this.activeStep.id,
-                    spent_time: diff,
-                };
-
-                this.createStepTime(stepTime)
-                    .then(response => {
-                        console.log(response);
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-
+                this.activeStep.spent_time = endTime - this.startTime;
                 this.startTime = DateTimeHelper.getCurrentTime();
             },
 

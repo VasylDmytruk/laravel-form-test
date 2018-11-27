@@ -10,6 +10,7 @@ const defaultActiveStep = {
     index: 0,
     step_order: 0,
     title: '',
+    spent_time: 0,
 };
 
 export default {
