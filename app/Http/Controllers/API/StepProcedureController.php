@@ -114,12 +114,12 @@ class StepProcedureController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @param StepProcedure $stepProcedure
+     * @return StepProcedureResource
      */
-    public function show($id)
+    public function show(StepProcedure $stepProcedure)
     {
-        //
+        return new StepProcedureResource($stepProcedure);
     }
 
     /**

@@ -14,4 +14,22 @@ export default class FormDataConverter {
             FormDataConverter.convertItemFormDataIfNeed(item);
         });
     }
+
+    static jsonParseItemField(item, field) {
+        const value = item[field];
+
+        if (value) {
+            try {
+                item[field] = JSON.parse(item[field]);
+            } catch (e) {
+            }
+        }
+    }
+
+    static jsonParseItemsField(items, field) {
+
+        items.forEach(item => {
+            FormDataConverter.jsonParseItemField(item, field);
+        });
+    }
 }

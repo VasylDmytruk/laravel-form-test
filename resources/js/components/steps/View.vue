@@ -18,7 +18,7 @@
     import {mapState, mapActions, mapMutations} from 'vuex';
 
     export default {
-        name: "StepsView",
+        name: 'StepsView',
         props: {
             menuItem: {
                 type: Object,

@@ -25,6 +25,7 @@ import StepsView from './components/steps/View';
 import StepsEdit from './components/steps/Edit';
 import StepsFlow from './components/steps-flow/Index';
 import StepProcedures from './components/step-procedures/Index';
+import StepProcedureView from './components/step-procedures/View';
 import VueGoodTablePlugin from 'vue-good-table';
 import 'vue-good-table/dist/vue-good-table.css';
 import VeeValidate from 'vee-validate';
@@ -65,6 +66,7 @@ const routes = [
     {path: '/steps/flow', component: StepsFlow},
 
     {path: '/step-procedure', component: StepProcedures},
+    {path: '/step-procedure/view/:id', component: StepProcedureView},
 ];
 
 const router = new VueRouter({routes});

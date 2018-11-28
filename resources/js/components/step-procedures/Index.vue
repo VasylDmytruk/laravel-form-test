@@ -5,11 +5,15 @@
                 <th>ID</th>
                 <th>User Name</th>
                 <th>Spent Time</th>
+                <th></th>
             </tr>
             <tr v-for="(item, index) in allItems">
                 <td>{{item.id}}</td>
                 <td>{{item.user.name}}</td>
                 <td>{{getFormattedTime(item.total_spent_time)}}</td>
+                <td>
+                    <router-link :to="'/step-procedure/view/' + item.id">View</router-link>
+                </td>
             </tr>
         </table>
     </div>
