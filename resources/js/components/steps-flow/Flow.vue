@@ -16,7 +16,9 @@
         <slot name="form"></slot>
 
         <div>
-            <a href="#" class="btn btn-success" @click.prevent="finishHandler()">Finish</a>
+            <a v-if="areAllStepsDone()" href="#" class="btn btn-success" @click.prevent="finishHandler()">Finish</a>
+            <a v-else href="#" class="btn disabled" @click.prevent="">Finish</a>
+
             <a href="#" class="btn btn-danger" @click.prevent="cancelHandler()">Cancel</a>
         </div>
 
@@ -33,7 +35,7 @@
 </template>
 
 <script>
-    import {mapState, mapMutations} from 'vuex';
+    import {mapState, mapMutations, mapGetters} from 'vuex';
 
     export default {
         name: 'Flow',
@@ -42,9 +44,14 @@
                 required: true,
             },
         },
-        computed: mapState({
-            activeStep: state => state.activeStep.activeStep,
-        }),
+        computed: {
+            ...mapState({
+                activeStep: state => state.activeStep.activeStep,
+            }),
+            ...mapGetters({
+                areAllStepsDone: 'doneSteps/areAllDone',
+            }),
+        },
         methods: {
             ...mapMutations({
                 setActiveStep: 'activeStep/setActiveStep',

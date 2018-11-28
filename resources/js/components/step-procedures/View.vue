@@ -2,9 +2,13 @@
     <div>
         <h1>Step procedure {{stepProcedure ? stepProcedure.id : 'empty'}}</h1>
 
+        <p v-if="stepProcedure.total_spent_time">
+            Spent total time: {{formattedTime(stepProcedure.total_spent_time)}}
+        </p>
+
         <div class="container">
             <div class="" v-for="(doneStep, index) in stepProcedure.done_steps" :key="doneStep.id">
-                <h4>Step: {{doneStep.step.title}}</h4>
+                <h4>Step: {{doneStep.step.title}} ({{formattedTime(doneStep.spent_time)}})</h4>
                 <div class="step-content">
                     <template v-for="section in doneStep.form_data_value.sections">
                         <template v-for="formRow in section.rows">
@@ -24,6 +28,7 @@
 
 <script>
     import {mapState, mapActions} from 'vuex';
+    import DateTimeHelper from './../../helpers/DateTimeHelper';
 
     export default {
         name: 'StepProcedureView',
@@ -41,6 +46,9 @@
             ...mapActions({
                 getStepProcedure: 'stepProcedures/getItem',
             }),
+            formattedTime(timeToFormat) {
+                return DateTimeHelper.getFormattedTime(timeToFormat);
+            },
         },
     };
 </script>

@@ -13,6 +13,8 @@
                 <td>{{getFormattedTime(item.total_spent_time)}}</td>
                 <td>
                     <router-link :to="'/step-procedure/view/' + item.id">View</router-link>
+                    <br>
+                    <a href="#" @click.prevent="deleteStepProcedure(item.id, index)">Delete</a>
                 </td>
             </tr>
         </table>
@@ -22,7 +24,7 @@
 <script>
     import {mapState, mapActions} from 'vuex';
     import DateTimeHelper from '../../helpers/DateTimeHelper';
-    
+
     export default {
         name: 'Index',
         computed: mapState({
@@ -39,6 +41,16 @@
 
             getFormattedTime(spentTime) {
                 return DateTimeHelper.getFormattedTime(spentTime);
+            },
+
+            deleteStepProcedure(id, index) {
+                this.deleteItem({id, index})
+                    .then(response => {
+                        console.log('delete', response);
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
             },
         },
     };

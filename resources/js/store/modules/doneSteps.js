@@ -78,8 +78,6 @@ export default {
         createDoneSteps({commit, state}) {
             const data = state.getDataForSaving();
 
-            console.log('createDoneSteps', data);
-
             return new Promise((resolve, reject) => {
                 stepProceduresApiCrud.createItem(
                     response => {

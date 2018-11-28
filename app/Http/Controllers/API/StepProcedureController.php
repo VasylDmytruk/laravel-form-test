@@ -134,14 +134,20 @@ class StepProcedureController extends Controller
         //
     }
 
+    // TODO remove this metod after testing or make other implementation (only for theCreator)
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param StepProcedure $stepProcedure
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(StepProcedure $stepProcedure)
     {
-        //
+        $deleted = $stepProcedure->delete();
+
+        return response([
+            'success' => $deleted,
+        ]);
     }
 }

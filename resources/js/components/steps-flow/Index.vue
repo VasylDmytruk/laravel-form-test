@@ -22,6 +22,7 @@
     import Flow from './Flow';
     import Form from './Form';
     import DateTimeHelper from './../../helpers/DateTimeHelper';
+    import NotificationHelper from './../../helpers/NotificationHelper';
 
     export default {
         name: 'Index',
@@ -90,16 +91,35 @@
             },
 
             stepFinishedHandler() {
-                // TODO save doneSteps
                 if (this.areAllStepsDone()) {
                     console.log('stepFinishedHandler');
 
-                    // TODO send to server
-                    this.createDoneSteps();
+                    this.createDoneSteps()
+                        .then(response => {
+                            const notificationType = response.success
+                                ? NotificationHelper.TYPE_SUCCESS
+                                : NotificationHelper.TYPE_ERROR;
+                            const notificationText = response.success
+                                ? 'Your steps saved successfully!'
+                                : 'Steps did not save! Some error occurred!';
+
+                            this.$notify({type: notificationType, title: 'Save result', text: notificationText});
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            this.$notify({type: 'error', title: 'Save result', text: 'Some error occurred!'});
+                        });
+
+                    this.resetSteps();
                 }
             },
 
             stepCanceledHandler() {
+                this.resetSteps();
+                this.$notify({type: NotificationHelper.TYPE_WARNING, text: 'Canceled!'});
+            },
+
+            resetSteps() {
                 this.resetActiveStep();
                 this.resetDoneSteps();
             },
