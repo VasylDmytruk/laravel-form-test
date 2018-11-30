@@ -5,6 +5,7 @@ import FormDataConverter from '../../helpers/FormDataConverter';
 export default {
     namespaced: true,
     state: {
+        // TODO update done steps if steps was updated
         doneSteps: [],
         allStepsDone: false,
         getDataForSaving() {

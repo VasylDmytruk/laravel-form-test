@@ -20,7 +20,7 @@
         "vue": "^2.5.17"
     },
     "dependencies": {
-        "autoxloo-form-builder": "^1.2.31",
+        "autoxloo-form-builder": "^1.2.33",
         "bootstrap-vue": "^2.0.0-rc.11",
         "clone-deep": "^4.0.1",
         "underscore": "latest",

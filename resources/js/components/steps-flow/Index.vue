@@ -67,14 +67,6 @@
                 this.processTime(endTime);
 
                 this.setActiveStepDone();
-
-                // console.log('formSubmitHandler', formData);
-                // const isValid = this.$refs.observer.validate();
-                // isValid.then(value => {
-                //     console.log('is valid value: ', value);
-                // }).catch(error => {
-                //     console.error('is valid error', error);
-                // });
             },
 
             processTime(endTime) {
