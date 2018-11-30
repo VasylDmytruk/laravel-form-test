@@ -66,6 +66,7 @@
                 const endTime = DateTimeHelper.getCurrentTime();
                 this.processTime(endTime);
 
+                console.log('formSubmitHandler formData', formData);
                 this.setActiveStepDone();
 
                 // console.log('formSubmitHandler', formData);

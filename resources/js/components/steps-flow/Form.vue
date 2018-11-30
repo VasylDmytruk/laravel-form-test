@@ -3,28 +3,16 @@
         <form action="" @submit.prevent="submitForm">
             <form-builder type="gui" :form="formBuilderData"></form-builder>
 
-            <!--<input-->
-                    <!--type="text"-->
-                    <!--:name="validatorObj.name"-->
-                    <!--v-validate="validatorObj.validationRules"-->
-                    <!--:class="{ input: true, 'is-danger': errors.has(validatorObj.name) }"-->
-            <!--&gt;-->
-            <!--<span>{{ errors.first(validatorObj.name) }}</span>-->
-            <!--<span v-show="errors.has(validatorObj.name)"-->
-                  <!--class="help is-danger">-->
-                <!--{{ errors.first(validatorObj.name) }}-->
-            <!--</span>-->
-
             <input v-if="!isStepDone()" type="submit" class="btn btn-info" value="Submit">
             <a v-else type="submit" class="btn disabled" href="#" @click.prevent="">Submit</a>
-
 
         </form>
     </div>
 </template>
 
 <script>
-    import Vue from 'vue';
+    import {Validator} from 'vee-validate';
+    import ControlValidatorHelper from './../../helpers/ControlValidatorHelper';
 
     export default {
         name: 'Form',
@@ -43,6 +31,10 @@
                     validationRules: 'required',
                     name: 'testValidation',
                 },
+                veeValidator: new Validator(),
+                isLastSection: false,
+                isLastRow: false,
+                isLastControl: false,
             };
         },
         methods: {
@@ -54,66 +46,52 @@
                     return;
                 }
 
-                // console.log('this.$validator', this.$validator);
-                // console.log('this.$validator.errors', this.$validator.errors);
-                // console.log('this.$validator.fields', this.$validator.fields);
-                // this.$validator.validateAll().then(result => {
-                //     if (result) {
-                //         // eslint-disable-next-line
-                //         console.log("Form Submitted!************");
-                //         return;
-                //     }
-                //
-                //     console.error("Correct them errors!**************", result);
-                // });
-
-                // this.validateFormData();
-
-
-                console.log('this.$emit(\'form-submit', this.formData);
-                this.$emit('form-submit', this.formData);
-
-
-                // this.valid = true;
-                // this.validateFormData();
-                //
-                // if (this.valid) {
-                //     this.$emit('form-submit', this.formData);
-                // } else {
-                //     console.log('NOT VALID');
-                // }
+                this.valid = true;
+                this.validateFormData();
             },
             validateFormData() {
-                // console.log('validateFormData');
-                this.formBuilderData.sections.forEach(section => {
+                this.formBuilderData.sections.forEach((section, index, sections) => {
+                    this.isLastSection = index === sections.length - 1;
                     this.iterateSection(section);
                 });
             },
             iterateSection(section) {
-                section.rows.forEach(row => {
+                section.rows.forEach((row, index, rows) => {
+                    this.isLastRow = index === rows.length - 1;
                     this.iterateRow(row);
                 });
             },
             iterateRow(row) {
-                row.controls.forEach(control => {
-                    this.iterateControl(control);
+                row.controls.forEach((control, index, controls) => {
+                    this.isLastControl = index === controls.length - 1;
+                    this.validateControl(control);
                 });
             },
-            iterateControl(control) {
-                Vue.set(control, 'formSubmit', true);
-                console.log('control.formSubmit', control.formSubmit);
-                // this.validateControl(control);
-                // this.formData[control.name] = control.value;
-            },
-            validateControl(control) {
-                // TODO validate control
+            async validateControl(control) {
+                const {valid, errors} = await this.veeValidator.verify(
+                    control.value,
+                    control.validationRules,
+                    {name: `"${control.label}"`}
+                );
 
-                if (control.required && control.value === null) {
-                    // TODO add validation false view to form gui
-                    control.valid = false;
-                    control.validationMessage = `"${control.label}" is required`;
+                if (valid) {
+                    ControlValidatorHelper.resetErrors(control);
+                } else {
                     this.valid = false;
+                    ControlValidatorHelper.setErrors(control, errors);
                 }
+
+                this.emitSubmitIfNeed();
+            },
+            emitSubmitIfNeed() {
+                if (this.isLastItem() && this.valid) {
+                    this.$emit('form-submit', this.formData);
+                } else {
+                    console.log('NOT VALID');
+                }
+            },
+            isLastItem() {
+                return this.isLastSection && this.isLastRow && this.isLastControl;
             },
         },
     };
