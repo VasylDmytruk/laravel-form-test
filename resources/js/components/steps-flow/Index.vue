@@ -66,7 +66,6 @@
                 const endTime = DateTimeHelper.getCurrentTime();
                 this.processTime(endTime);
 
-                console.log('formSubmitHandler formData', formData);
                 this.setActiveStepDone();
 
                 // console.log('formSubmitHandler', formData);
@@ -93,7 +92,6 @@
 
             stepFinishedHandler() {
                 if (this.areAllStepsDone()) {
-                    console.log('stepFinishedHandler');
 
                     this.createDoneSteps()
                         .then(response => {

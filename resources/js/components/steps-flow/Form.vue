@@ -87,7 +87,7 @@
                 if (this.isLastItem() && this.valid) {
                     this.$emit('form-submit', this.formData);
                 } else {
-                    console.log('NOT VALID');
+                    // NOT VALID
                 }
             },
             isLastItem() {

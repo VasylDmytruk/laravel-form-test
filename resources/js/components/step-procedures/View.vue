@@ -37,10 +37,6 @@
         }),
         created() {
             this.getStepProcedure(this.$route.params.id);
-
-            setTimeout(() => {
-                console.log(this.stepProcedure);
-            }, 1000);
         },
         methods: {
             ...mapActions({
